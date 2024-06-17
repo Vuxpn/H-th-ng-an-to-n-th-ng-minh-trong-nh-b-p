@@ -112,12 +112,13 @@ void controlDoor() {
 
 void GASLevel() {
   int value = analogRead(sensor);
+  float t = dht.readTemperature();
   value = map(value, 0, 4095, 0, 100);
   Blynk.virtualWrite(V4, value);
   Serial.println(value);
 
   if (canhbaoState == 0) {
-    if (value >= 60) {
+    if (value >= 60 || t >= 50) {
       digitalWrite(buzzer, HIGH);
       digitalWrite(LED, HIGH);
       digitalWrite(FAN_PIN, HIGH);
@@ -195,9 +196,6 @@ void loop() {
     } else {
       button2State = HIGH;
     }
-  // btn = digitalRead(button2);
-  // // Hiển thị led tương ứng
-  // digitalWrite(LED, btn);
-  // Giảm tần số đọc dữ liệu từ cảm biến và gửi lên Blynk
+
   delay(200);
 }
